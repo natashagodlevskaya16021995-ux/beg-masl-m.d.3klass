@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Maslenitsa Game</title>
+  <title>Maslenitsa Game - Fixed Scale</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -17,62 +17,53 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      font-family: "Roboto Condensed", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #000;
-    }
-    body {
-      margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      background: #000;
+      /* Центрируем саму игру на экране */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Roboto Condensed", sans-serif;
     }
 
+    /* --- КОНТЕЙНЕР ИГРЫ (ФИКСИРОВАННЫЙ РАЗМЕР) --- */
     #game {
       position: relative;
-      width: 100vw;
-      height: 100vh;
+      /* Жесткие размеры HD стандарта */
+      width: 1280px;
+      height: 720px;
       background:
         linear-gradient(var(--bg-overlay), var(--bg-overlay)),
         var(--bg-image) center/cover no-repeat;
       overflow: hidden;
       color: #fff;
-      /* ИСПОЛЬЗУЕМ vh (процент от высоты экрана) вместо px для базового шрифта */
-      font-size: 3.5vh; 
+      font-size: 40px; /* Вернули четкие пиксели */
+      box-shadow: 0 0 50px rgba(0,0,0,0.8); /* Тень для красоты */
     }
 
-    /* --- АДАПТИВНЫЙ ИНТЕРФЕЙС (HUD) --- */
+    /* Интерфейс (HUD) */
     .hud {
       position: absolute;
-      top: 2vh; /* Отступ сверху в % */
+      top: 20px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      flex-wrap: nowrap; /* Запрещаем переносы строк */
-      gap: 3vw; /* Отступы между элементами зависят от ширины */
-      padding: 1vh 2vw;
+      gap: 30px;
+      padding: 10px 30px;
       background: rgba(5, 5, 5, 0.45);
       border-radius: 999px;
       backdrop-filter: blur(8px);
       box-shadow: 0 8px 25px rgba(0,0,0,0.35);
       align-items: center;
-      justify-content: center;
       z-index: 50;
-      width: max-content; /* Ширина по содержимому */
-      max-width: 95%; /* Не шире экрана */
-      font-size: 3.5vh; /* Размер шрифта зависит от высоты экрана */
+      white-space: nowrap;
     }
     .hud-item {
-      letter-spacing: 0.03em;
       text-shadow: 0 1px 3px rgba(0,0,0,0.8);
       display: flex;
       align-items: center;
-      gap: 0.5vw;
-      white-space: nowrap; /* Текст никогда не разрывается */
+      gap: 10px;
     }
     .hud-label { opacity: 0.8; }
     .hud-value {
@@ -80,11 +71,11 @@
       color: #ffe28a;
     }
     
-    /* Герой тоже немного масштабируется */
+    /* Герой */
     #hero {
       position: absolute;
-      width: 13vh; /* Размер зависит от высоты экрана */
-      height: 17vh;
+      width: 110px; 
+      height: 140px;
       background: url("images/pers.png") center/contain no-repeat;
       transform-origin: center center;
       transition: transform 0.15s ease-out;
@@ -92,15 +83,15 @@
       filter: drop-shadow(0 10px 18px rgba(0,0,0,0.55));
     }
 
-    /* Предметы тоже ставим в зависимость от высоты экрана, чтобы не были гигантскими */
+    /* Предметы */
     .item, .candy {
       position: absolute;
       cursor: pointer;
       transition: transform 0.25s ease, opacity 0.25s ease, filter 0.2s ease;
       filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6));
       z-index: 10;
-      width: 12vh; /* Было 100px fix */
-      height: 12vh;
+      width: 110px;
+      height: 110px;
     }
     .item-type-1 { background: url("images/zadan1.png") center/contain no-repeat; }
     .item-type-2 { background: url("images/zadan2.png") center/contain no-repeat; }
@@ -116,8 +107,8 @@
 
     .gold-pop {
       position: absolute;
-      width: 10vh;
-      height: 10vh;
+      width: 90px;
+      height: 90px;
       pointer-events: none;
       border-radius: 50%;
       background: radial-gradient(circle, rgba(255,255,255,0.9), rgba(255,215,128,0.1) 55%, transparent 70%);
@@ -137,7 +128,7 @@
     .floating-score {
       position: absolute;
       color: #ffe28a;
-      font-size: 4vh; 
+      font-size: 36px; 
       font-weight: 800;
       text-shadow: 0 0 8px rgba(0,0,0,0.9);
       pointer-events: none;
@@ -152,8 +143,8 @@
 
     .error-mark {
       position: absolute;
-      width: 5vh;
-      height: 5vh;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       background: rgba(220, 20, 60, 0.9);
       display: flex;
@@ -161,7 +152,7 @@
       justify-content: center;
       color: #fff;
       font-weight: 900;
-      font-size: 3vh; 
+      font-size: 30px; 
       pointer-events: none;
       box-shadow: 0 8px 20px rgba(0,0,0,0.6);
       animation: bounceMark 0.8s ease-out forwards;
@@ -188,12 +179,12 @@
     
     .modal-window {
       position: relative;
-      width: 80vw;   
-      height: 85vh;  
-      padding: 4vh;
+      width: 900px;   
+      height: 600px;  
+      padding: 50px;
       background: url("images/podl.png") no-repeat;
       background-size: 100% 100%; 
-      border-radius: 3vh;
+      border-radius: 40px;
       box-shadow: 0 25px 80px rgba(0,0,0,0.9);
       color: #1e1b14;
       backdrop-filter: blur(4px);
@@ -203,45 +194,44 @@
       overflow: hidden;
     }
     .modal-header {
-      font-size: 5vh; 
+      font-size: 48px; 
       font-weight: 700;
-      margin-bottom: 2vh;
+      margin-bottom: 20px;
       text-align: center;
       text-shadow: 0 1px 2px rgba(255,255,255,0.8);
     }
     .modal-question {
-      font-size: 7vh; 
-      margin-bottom: 3vh;
+      font-size: 60px; 
+      margin-bottom: 40px;
       text-align: center;
       font-weight: 600;
-      line-height: 1.1;
     }
     .modal-options {
       display: flex;
       flex-direction: column;
-      gap: 1.5vh;
+      gap: 20px;
       width: 100%;
-      max-width: 800px;
+      max-width: 700px;
       margin: 0 auto;
     }
     .option-btn {
       border: none;
       border-radius: 999px;
-      padding: 1.5vh 3vw;
-      font-size: 4vh; 
+      padding: 15px 40px;
+      font-size: 36px; 
       cursor: pointer;
       text-align: left;
       background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(250,242,217,0.96));
       box-shadow: 0 6px 15px rgba(0,0,0,0.2);
       transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
       display: flex;
-      gap: 1.5vw;
+      gap: 20px;
       align-items: center;
       font-family: "Roboto Condensed", sans-serif;
     }
     .option-btn span.bullet {
-      width: 3vh;
-      height: 3vh;
+      width: 25px;
+      height: 25px;
       border-radius: 50%;
       border: 3px solid rgba(120, 96, 60, 0.7);
       flex-shrink: 0;
@@ -255,7 +245,7 @@
       box-shadow: 0 0 30px rgba(255,215,128,0.9);
     }
 
-    /* ОВЕРЛЕИ (Старт / Конец) */
+    /* ОВЕРЛЕИ */
     .overlay {
       position: absolute;
       inset: 0;
@@ -269,41 +259,39 @@
     
     .overlay-content {
       text-align: center;
-      padding: 4vh 4vw;
-      border-radius: 20px;
+      padding: 40px;
+      border-radius: 30px;
       background: radial-gradient(circle at top, rgba(255,255,255,0.06), rgba(0,0,0,0.9));
       border: 1px solid rgba(255,255,255,0.12);
       box-shadow: 0 25px 60px rgba(0,0,0,0.9);
       position: relative;
       overflow: hidden;
-      width: 90%;
-      max-width: 600px;
-      font-family: "Roboto Condensed", sans-serif;
+      width: 600px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
     .overlay-title {
-      font-size: 3.5vh; 
+      font-size: 32px; 
       font-weight: 900;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 2vh;
+      margin-bottom: 20px;
       color: #ffe28a;
       text-shadow: 0 0 18px rgba(0,0,0,0.9);
     }
     .overlay-sub {
-      font-size: 2.2vh; 
-      margin-bottom: 3vh;
+      font-size: 22px; 
+      margin-bottom: 30px;
       opacity: 0.9;
       color: #f8f8f8;
-      line-height: 1.4;
+      line-height: 1.5;
     }
     
     .start-hero-img {
-      width: 15vh; /* Размер картинки зависит от высоты */
+      width: 140px;
       height: auto;
-      margin-bottom: 2vh;
+      margin-bottom: 20px;
       filter: drop-shadow(0 0 15px rgba(255, 215, 128, 0.6));
       animation: floatHero 2s ease-in-out infinite;
     }
@@ -315,8 +303,8 @@
     .btn-primary {
       border: none;
       border-radius: 999px;
-      padding: 1.5vh 4vw;
-      font-size: 2.5vh; 
+      padding: 15px 40px;
+      font-size: 24px; 
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -348,29 +336,28 @@
     /* Нижняя подсказка */
     .hint-controls {
       position: absolute;
-      bottom: 2vh;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      padding: 0.5vh 1.5vw;
+      padding: 8px 20px;
       border-radius: 999px;
       background: rgba(0,0,0,0.55);
       color: #eee;
-      font-size: 3vh; 
+      font-size: 24px; 
       letter-spacing: 0.06em;
       text-transform: uppercase;
       opacity: 0.9;
       display: flex;
-      gap: 1vw;
+      gap: 15px;
       align-items: center;
       z-index: 40;
-      font-family: "Roboto Condensed", sans-serif;
       white-space: nowrap;
     }
     .hint-key {
       border-radius: 5px;
       border: 1px solid rgba(255,255,255,0.4);
-      padding: 0 0.5vw;
-      font-size: 2.5vh; 
+      padding: 2px 8px;
+      font-size: 20px; 
       background: rgba(255,255,255,0.06);
     }
   </style>
@@ -430,7 +417,29 @@
   </div>
 
   <script>
-    // --- НАСТРОЙКА ЗВУКОВ ---
+    // --- 1. СКРИПТ АВТО-МАСШТАБИРОВАНИЯ ---
+    function resizeGame() {
+      const gameContainer = document.getElementById('game');
+      const baseWidth = 1280; // Наше целевое разрешение
+      const baseHeight = 720;
+      
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      
+      const scaleX = windowWidth / baseWidth;
+      const scaleY = windowHeight / baseHeight;
+      const scale = Math.min(scaleX, scaleY);
+      
+      // Применяем масштаб
+      gameContainer.style.transform = `scale(${scale})`;
+    }
+    
+    window.addEventListener('load', resizeGame);
+    window.addEventListener('resize', resizeGame);
+
+
+    // --- 2. ИГРОВАЯ ЛОГИКА ---
+
     const SOUNDS_PATH = "sounds/";
 
     const soundClick = new Audio(SOUNDS_PATH + "click.mp3");
@@ -442,12 +451,8 @@
     function playSound(audio) {
       if (!audio) return;
       audio.currentTime = 0;
-      audio.play().catch(e => {
-        console.warn("Звук не воспроизвелся (нужен клик по странице):", e);
-      });
+      audio.play().catch(e => console.warn(e));
     }
-
-    // --- ОСНОВНОЙ КОД ---
 
     const gameEl = document.getElementById('game');
     const heroEl = document.getElementById('hero');
@@ -459,23 +464,15 @@
     const modalQuestionEl = document.getElementById('modalQuestion');
     const modalOptionsEl = document.getElementById('modalOptions');
 
-    // Оверлеи
     const startOverlay = document.getElementById('startOverlay');
     const btnStartGame = document.getElementById('btnStartGame');
-
     const gameOverOverlay = document.getElementById('gameOverOverlay');
     const overlayTitle = document.getElementById('overlayTitle');
     const overlaySub = document.getElementById('overlaySub');
     const btnRestart = document.getElementById('btnRestart');
 
-    // В JS мы используем относительные размеры только там, где это критично
-    // Но для движения героя оставим пиксели, но будем считать их от размера экрана
-    let HERO_BASE_SIZE = { w: 90, h: 110 }; 
-    
-    // При старте пересчитаем реальные пиксели исходя из экрана, но пока оставим логику как есть, 
-    // так как CSS сам масштабирует визуал через vh. Логика коллизий может работать и в виртуальных единицах, 
-    // но проще оставить как было, лишь подправив CSS.
-    
+    // Размеры в жестких пикселях (под 1280x720)
+    const HERO_BASE_SIZE = { w: 110, h: 140 }; 
     let HERO_AUTO_SPEED = 1.3;
     let HERO_INPUT_SPEED = 2.3;
     const HERO_GROWTH_PER_CORRECT = 0.05;
@@ -486,12 +483,11 @@
     const SPAWN_BATCH_MIN = 2;
     const SPAWN_BATCH_MAX = 3;
     const SPAWN_INTERVAL = 1200;
-
-    const NEARBY_DISTANCE = 100; // Дистанция срабатывания
+    const NEARBY_DISTANCE = 150; // Увеличил, т.к. разрешение стало больше
 
     let hero = {
-      x: 200,
-      y: 200,
+      x: 600,
+      y: 300,
       vx: 0,
       vy: 0,
       scale: 1,
@@ -499,20 +495,13 @@
       flipped: false
     };
 
-    let keys = {
-      ArrowUp: false,
-      ArrowDown: false,
-      ArrowLeft: false,
-      ArrowRight: false
-    };
+    let keys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
 
     let items = [];
     let candies = [];
-
     let pendingMain = NUM_MAIN_ITEMS;
     let pendingCandies = NUM_CANDIES;
     let spawnTimer = null;
-
     let score = 0;
     let mistakes = 0;
     let foundCount = 0;
@@ -520,106 +509,25 @@
     let isWin = false;
     let currentItemId = null;
     let gameStarted = false; 
-
     let modalOpen = false;
     let savedVelocity = { vx: 0, vy: 0, autoMoving: false };
 
     const TASKS = [
-      {
-        question: "Раздели 60 на 5",
-        options: [
-          { text: "12", correct: true },
-          { text: "10", correct: false },
-          { text: "15", correct: false }
-        ]
-      },
-      {
-        question: "Раздели 42 на 21",
-        options: [
-          { text: "2", correct: true },
-          { text: "3", correct: false },
-          { text: "21", correct: false }
-        ]
-      },
-      {
-        question: "Найди произведение 24 и 3",
-        options: [
-          { text: "72", correct: true },
-          { text: "27", correct: false },
-          { text: "63", correct: false }
-        ]
-      },
-      {
-        question: "Раздели 88 на 44",
-        options: [
-          { text: "2", correct: true },
-          { text: "4", correct: false },
-          { text: "44", correct: false }
-        ]
-      },
-      {
-        question: "Увеличь 16 в 5 раз",
-        options: [
-          { text: "80", correct: true },
-          { text: "65", correct: false },
-          { text: "75", correct: false }
-        ]
-      },
-      {
-        question: "Раздели 96 на 3",
-        options: [
-          { text: "32", correct: true },
-          { text: "28", correct: false },
-          { text: "36", correct: false }
-        ]
-      },
-      {
-        question: "Раздели 64 на 16",
-        options: [
-          { text: "4", correct: true },
-          { text: "8", correct: false },
-          { text: "16", correct: false }
-        ]
-      },
-      {
-        question: "Найди произведение 4 и 12",
-        options: [
-          { text: "48", correct: true },
-          { text: "42", correct: false },
-          { text: "36", correct: false }
-        ]
-      },
-      {
-        question: "Раздели 84 на 6",
-        options: [
-          { text: "14", correct: true },
-          { text: "12", correct: false },
-          { text: "16", correct: false }
-        ]
-      },
-      {
-        question: "Раздели 96 на 32",
-        options: [
-          { text: "3", correct: true },
-          { text: "4", correct: false },
-          { text: "6", correct: false }
-        ]
-      }
+      { question: "Раздели 60 на 5", options: [{ text: "12", correct: true }, { text: "10", correct: false }, { text: "15", correct: false }] },
+      { question: "Раздели 42 на 21", options: [{ text: "2", correct: true }, { text: "3", correct: false }, { text: "21", correct: false }] },
+      { question: "Найди произведение 24 и 3", options: [{ text: "72", correct: true }, { text: "27", correct: false }, { text: "63", correct: false }] },
+      { question: "Раздели 88 на 44", options: [{ text: "2", correct: true }, { text: "4", correct: false }, { text: "44", correct: false }] },
+      { question: "Увеличь 16 в 5 раз", options: [{ text: "80", correct: true }, { text: "65", correct: false }, { text: "75", correct: false }] },
+      { question: "Раздели 96 на 3", options: [{ text: "32", correct: true }, { text: "28", correct: false }, { text: "36", correct: false }] },
+      { question: "Раздели 64 на 16", options: [{ text: "4", correct: true }, { text: "8", correct: false }, { text: "16", correct: false }] },
+      { question: "Найди произведение 4 и 12", options: [{ text: "48", correct: true }, { text: "42", correct: false }, { text: "36", correct: false }] },
+      { question: "Раздели 84 на 6", options: [{ text: "14", correct: true }, { text: "12", correct: false }, { text: "16", correct: false }] },
+      { question: "Раздели 96 на 32", options: [{ text: "3", correct: true }, { text: "4", correct: false }, { text: "6", correct: false }] }
     ];
 
-    function rand(min, max) {
-      return Math.random() * (max - min) + min;
-    }
-
-    function distance(ax, ay, bx, by) {
-      const dx = ax - bx;
-      const dy = ay - by;
-      return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    function rectsOverlap(ax, ay, aw, ah, bx, by, bw, bh) {
-      return !(ax + aw < bx || ax > bx + bw || ay + ah < by || ay > by + bh);
-    }
+    function rand(min, max) { return Math.random() * (max - min) + min; }
+    function distance(ax, ay, bx, by) { const dx = ax - bx; const dy = ay - by; return Math.sqrt(dx*dx + dy*dy); }
+    function rectsOverlap(ax, ay, aw, ah, bx, by, bw, bh) { return !(ax + aw < bx || ax > bx + bw || ay + ah < by || ay > by + bh); }
 
     function anyOverlap(x, y, size) {
       const all = [
@@ -633,22 +541,20 @@
     }
 
     function findNonOverlappingPosition(size) {
-      const w = gameEl.clientWidth;
-      const h = gameEl.clientHeight;
+      // Здесь используем фиксированные размеры 1280x720, так как игра живет в этом пространстве
+      const w = 1280; 
+      const h = 720;
       const MAX_TRIES = 200;
-      const MARGIN_X = 100; // Чуть уменьшил, т.к. экран может быть маленьким
+      const MARGIN_X = 150; 
       
       for (let i = 0; i < MAX_TRIES; i++) {
         const x = rand(MARGIN_X, w - size - MARGIN_X);
-        const y = rand(60, h - size - 60);
+        const y = rand(100, h - size - 80);
+        
         if (!anyOverlap(x, y, size)) {
-          // Получаем текущие размеры героя из DOM, т.к. они теперь зависят от vh
-          const heroRect = heroEl.getBoundingClientRect();
-          // Приводим координаты героя к системе координат игры (если нужно)
-          // В данной простой реализации hero.x и hero.y - это пиксели внутри gameEl
-          
-          const heroCx = hero.x + heroRect.width / 2;
-          const heroCy = hero.y + heroRect.height / 2;
+          // Координаты героя тоже в системе 1280x720
+          const heroCx = hero.x + HERO_BASE_SIZE.w / 2;
+          const heroCy = hero.y + HERO_BASE_SIZE.h / 2;
           const objCx = x + size / 2;
           const objCy = y + size / 2;
           
@@ -659,7 +565,7 @@
       }
       return { 
         x: rand(MARGIN_X, w - size - MARGIN_X), 
-        y: rand(60, h - size - 60) 
+        y: rand(100, h - size - 80) 
       };
     }
 
@@ -667,79 +573,53 @@
       startOverlay.classList.remove('active');
       startOverlay.style.display = 'none';
       hideOverlay();
-      
       gameStarted = true;
 
       soundWin.pause(); soundWin.currentTime = 0;
       soundLose.pause(); soundLose.currentTime = 0;
 
-      const cs = getComputedStyle(document.documentElement);
-      HERO_AUTO_SPEED = parseFloat(cs.getPropertyValue('--hero-auto-speed')) || 1.3;
-      HERO_INPUT_SPEED = parseFloat(cs.getPropertyValue('--hero-input-speed')) || 2.3;
-
-      score = 0;
-      mistakes = 0;
-      foundCount = 0;
-      isGameOver = false;
-      isWin = false;
-      currentItemId = null;
-      modalOpen = false;
+      score = 0; mistakes = 0; foundCount = 0;
+      isGameOver = false; isWin = false; currentItemId = null; modalOpen = false;
 
       hero.scale = 1;
-      // Ставим героя в центр
-      hero.x = gameEl.clientWidth / 2 - 50; 
-      hero.y = gameEl.clientHeight / 2 - 50;
-      hero.vx = 0;
-      hero.vy = 0;
-      hero.autoMoving = false;
-      hero.flipped = false;
+      // Центр экрана 1280x720
+      hero.x = 1280 / 2 - HERO_BASE_SIZE.w / 2; 
+      hero.y = 720 / 2 - HERO_BASE_SIZE.h / 2;
+      hero.vx = 0; hero.vy = 0;
+      hero.autoMoving = false; hero.flipped = false;
       updateHeroVisual();
 
       clearObjects();
-      pendingMain = NUM_MAIN_ITEMS;
-      pendingCandies = NUM_CANDIES;
+      pendingMain = NUM_MAIN_ITEMS; pendingCandies = NUM_CANDIES;
 
       updateHUD();
       hideModal();
 
       if (spawnTimer) clearInterval(spawnTimer);
       spawnTimer = setInterval(spawnBatch, SPAWN_INTERVAL);
-
       requestAnimationFrame(gameLoop);
     }
 
     function clearObjects() {
       [...document.querySelectorAll('.item, .candy, .gold-pop, .floating-score, .error-mark, .confetti')]
         .forEach(el => el.remove());
-      items = [];
-      candies = [];
+      items = []; candies = [];
     }
 
     function spawnBatch() {
       if (!gameStarted) return;
       if (pendingMain <= 0 && pendingCandies <= 0) {
-        clearInterval(spawnTimer);
-        spawnTimer = null;
-        return;
+        clearInterval(spawnTimer); spawnTimer = null; return;
       }
-
       let toSpawn = Math.floor(rand(SPAWN_BATCH_MIN, SPAWN_BATCH_MAX + 1));
-
       while (toSpawn > 0 && (pendingMain > 0 || pendingCandies > 0)) {
         const choices = [];
         if (pendingMain > 0) choices.push('main');
         if (pendingCandies > 0) choices.push('candy');
         if (choices.length === 0) break;
-
         const type = choices[Math.floor(Math.random() * choices.length)];
-
-        if (type === 'main' && pendingMain > 0) {
-          spawnMainItem(NUM_MAIN_ITEMS - pendingMain);
-          pendingMain--;
-        } else if (type === 'candy' && pendingCandies > 0) {
-          spawnCandy(NUM_CANDIES - pendingCandies);
-          pendingCandies--;
-        }
+        if (type === 'main' && pendingMain > 0) { spawnMainItem(NUM_MAIN_ITEMS - pendingMain); pendingMain--; }
+        else if (type === 'candy' && pendingCandies > 0) { spawnCandy(NUM_CANDIES - pendingCandies); pendingCandies--; }
         toSpawn--;
       }
     }
@@ -747,56 +627,41 @@
     function spawnMainItem(index) {
       const id = 'item-' + index;
       const type = (index % 3) + 1;
-      // Размер объектов берем из CSS (он в vh), но для логики используем примерные пиксели
-      // Чтобы получить точный размер в пикселях:
-      const sizeVh = window.innerHeight * 0.12; // 12vh как в CSS
-      const size = sizeVh; 
-      
+      const size = 110; 
       const pos = findNonOverlappingPosition(size);
-      const x = pos.x;
-      const y = pos.y;
-
+      
       const el = document.createElement('div');
       el.classList.add('item', `item-type-${type}`);
-      el.style.left = x + 'px';
-      el.style.top = y + 'px';
+      el.style.left = pos.x + 'px';
+      el.style.top = pos.y + 'px';
       el.dataset.id = id;
-      el.dataset.index = index;
 
       el.addEventListener('click', () => {
-        if (isGameOver || isWin || !gameStarted) return;
-        if (modalOpen) return;
+        if (isGameOver || isWin || !gameStarted || modalOpen) return;
         const obj = items.find(it => it.id === id);
-        if (!obj || obj.solved) return;
-        if (!obj.active) return;
-        
+        if (!obj || obj.solved || !obj.active) return;
         playSound(soundClick);
         currentItemId = id;
         openTaskModalForItem(index);
       });
 
       gameEl.appendChild(el);
-
-      items.push({ id, x, y, size, el, solved: false, type, active: false });
+      items.push({ id, x: pos.x, y: pos.y, size, el, solved: false, active: false });
     }
 
     function spawnCandy(index) {
       const id = 'candy-' + index;
-      const sizeVh = window.innerHeight * 0.12; 
-      const size = sizeVh;
-      
+      const size = 110;
       const pos = findNonOverlappingPosition(size);
-      const x = pos.x;
-      const y = pos.y;
-
+      
       const el = document.createElement('div');
       el.classList.add('candy');
-      el.style.left = x + 'px';
-      el.style.top = y + 'px';
+      el.style.left = pos.x + 'px';
+      el.style.top = pos.y + 'px';
       el.dataset.id = id;
 
       gameEl.appendChild(el);
-      candies.push({ id, x, y, size, el, eaten: false });
+      candies.push({ id, x: pos.x, y: pos.y, size, el, eaten: false });
     }
 
     function updateHUD() {
@@ -809,48 +674,37 @@
       heroEl.style.left = hero.x + 'px';
       heroEl.style.top = hero.y + 'px';
       heroEl.style.setProperty('--hero-scale', hero.scale);
-
       const scaleX = hero.flipped ? -hero.scale : hero.scale;
       heroEl.style.transform = `scale(${scaleX}, ${hero.scale})`;
     }
 
     function moveHeroByInput() {
       if (modalOpen || !gameStarted) return;
-
       let dx = 0, dy = 0;
       if (keys.ArrowUp) dy -= 1;
       if (keys.ArrowDown) dy += 1;
       if (keys.ArrowLeft) dx -= 1;
       if (keys.ArrowRight) dx += 1;
-
       if (dx === 0 && dy === 0) return;
 
       const len = Math.hypot(dx, dy) || 1;
       dx = (dx / len) * HERO_INPUT_SPEED;
       dy = (dy / len) * HERO_INPUT_SPEED;
 
-      // Получаем текущие размеры героя в пикселях для коллизий со стенами
-      const heroRect = heroEl.getBoundingClientRect();
-      const heroW = heroRect.width;
-      const heroH = heroRect.height;
-      const w = gameEl.clientWidth;
-      const h = gameEl.clientHeight;
+      // Используем фиксированные 1280x720
+      const w = 1280; 
+      const h = 720;
+      const heroW = HERO_BASE_SIZE.w * hero.scale;
+      const heroH = HERO_BASE_SIZE.h * hero.scale;
       const margin = 5;
 
-      hero.x += dx;
-      hero.y += dy;
+      hero.x += dx; hero.y += dy;
 
-      if (hero.x <= margin) {
-        hero.x = margin;
-      } else if (hero.x + heroW >= w - margin) {
-        hero.x = w - margin - heroW;
-      }
-
-      if (hero.y <= 60) { // Верхний отступ под HUD
-        hero.y = 60;
-      } else if (hero.y + heroH >= h - margin) {
-        hero.y = h - margin - heroH;
-      }
+      if (hero.x <= margin) hero.x = margin;
+      else if (hero.x + heroW >= w - margin) hero.x = w - margin - heroW;
+      
+      if (hero.y <= 80) hero.y = 80;
+      else if (hero.y + heroH >= h - margin) hero.y = h - margin - heroH;
     }
 
     function handleInputDirectionForAuto() {
@@ -860,84 +714,49 @@
       if (keys.ArrowDown) dy += 1;
       if (keys.ArrowLeft) dx -= 1;
       if (keys.ArrowRight) dx += 1;
-
       if (dx !== 0 || dy !== 0) {
         const len = Math.hypot(dx, dy) || 1;
-        hero.vx = (dx / len);
-        hero.vy = (dy / len);
+        hero.vx = (dx / len); hero.vy = (dy / len);
       }
     }
 
     function moveHeroAuto() {
       if (!hero.autoMoving || modalOpen || !gameStarted) return;
-
-      const w = gameEl.clientWidth;
-      const h = gameEl.clientHeight;
-      const heroRect = heroEl.getBoundingClientRect();
-      const heroW = heroRect.width;
-      const heroH = heroRect.height;
+      const w = 1280; const h = 720;
+      const heroW = HERO_BASE_SIZE.w * hero.scale;
+      const heroH = HERO_BASE_SIZE.h * hero.scale;
       const margin = 5;
 
       hero.x += hero.vx * HERO_AUTO_SPEED;
       hero.y += hero.vy * HERO_AUTO_SPEED;
 
-      if (hero.x <= margin) {
-        hero.x = margin;
-        hero.vx *= -1;
-        hero.flipped = !hero.flipped;
-      } else if (hero.x + heroW >= w - margin) {
-        hero.x = w - margin - heroW;
-        hero.vx *= -1;
-        hero.flipped = !hero.flipped;
-      }
+      if (hero.x <= margin) { hero.x = margin; hero.vx *= -1; hero.flipped = !hero.flipped; }
+      else if (hero.x + heroW >= w - margin) { hero.x = w - margin - heroW; hero.vx *= -1; hero.flipped = !hero.flipped; }
 
-      if (hero.y <= 60) {
-        hero.y = 60;
-        hero.vy *= -1;
-      } else if (hero.y + heroH >= h - margin) {
-        hero.y = h - margin - heroH;
-        hero.vy *= -1;
-      }
+      if (hero.y <= 80) { hero.y = 80; hero.vy *= -1; }
+      else if (hero.y + heroH >= h - margin) { hero.y = h - margin - heroH; hero.vy *= -1; }
     }
 
     function updateNearbyAndAutoMoveTrigger() {
       if (!gameStarted) return;
-      
-      const heroRect = heroEl.getBoundingClientRect();
-      const heroCenterX = hero.x + heroRect.width / 2;
-      const heroCenterY = hero.y + heroRect.height / 2;
+      const heroCenterX = hero.x + (HERO_BASE_SIZE.w * hero.scale) / 2;
+      const heroCenterY = hero.y + (HERO_BASE_SIZE.h * hero.scale) / 2;
 
       let anyNearby = false;
 
       items.forEach(it => {
-        if (it.solved) {
-          it.active = false;
-          it.el.classList.remove('nearby');
-          return;
-        }
-        const cx = it.x + it.size / 2;
-        const cy = it.y + it.size / 2;
+        if (it.solved) { it.active = false; it.el.classList.remove('nearby'); return; }
+        const cx = it.x + it.size / 2; const cy = it.y + it.size / 2;
         const d = distance(heroCenterX, heroCenterY, cx, cy);
         const isNear = d <= NEARBY_DISTANCE;
-
         it.active = isNear;
-        if (isNear) {
-          it.el.classList.add('nearby');
-          anyNearby = true;
-        } else {
-          it.el.classList.remove('nearby');
-        }
+        if (isNear) { it.el.classList.add('nearby'); anyNearby = true; } else { it.el.classList.remove('nearby'); }
       });
 
       candies.forEach(c => {
-        const cx = c.x + c.size / 2;
-        const cy = c.y + c.size / 2;
+        const cx = c.x + c.size / 2; const cy = c.y + c.size / 2;
         const d = distance(heroCenterX, heroCenterY, cx, cy);
-        if (d <= NEARBY_DISTANCE && !c.eaten) {
-          c.el.classList.add('nearby');
-        } else {
-          c.el.classList.remove('nearby');
-        }
+        if (d <= NEARBY_DISTANCE && !c.eaten) { c.el.classList.add('nearby'); } else { c.el.classList.remove('nearby'); }
       });
 
       if (anyNearby && !hero.autoMoving) {
@@ -951,19 +770,15 @@
 
     function checkCollisions() {
       if (!gameStarted) return;
-      const heroRect = heroEl.getBoundingClientRect();
-      const heroW = heroRect.width;
-      const heroH = heroRect.height;
+      const heroW = HERO_BASE_SIZE.w * hero.scale;
+      const heroH = HERO_BASE_SIZE.h * hero.scale;
 
       candies.forEach(c => {
         if (c.eaten) return;
-        // Простая проверка
         if (rectsOverlap(hero.x, hero.y, heroW, heroH, c.x, c.y, c.size, c.size)) {
           c.eaten = true;
-          c.el.style.opacity = '0';
-          c.el.style.transform = 'scale(0.3)';
+          c.el.style.opacity = '0'; c.el.style.transform = 'scale(0.3)';
           setTimeout(() => c.el.remove(), 250);
-
           playSound(soundClick);
           score += 5;
           showGoldPop(c.x + c.size/2, c.y + c.size/2);
@@ -976,8 +791,8 @@
     function showGoldPop(cx, cy) {
       const pop = document.createElement('div');
       pop.className = 'gold-pop';
-      pop.style.left = (cx - 25) + 'px'; // Центрируем примерно
-      pop.style.top = (cy - 25) + 'px';
+      pop.style.left = (cx - 45) + 'px';
+      pop.style.top = (cy - 45) + 'px';
       gameEl.appendChild(pop);
       setTimeout(() => pop.remove(), 650);
     }
@@ -996,8 +811,8 @@
       const mark = document.createElement('div');
       mark.className = 'error-mark';
       mark.textContent = '✕';
-      mark.style.left = (x - 15) + 'px';
-      mark.style.top = (y - 15) + 'px';
+      mark.style.left = (x - 25) + 'px';
+      mark.style.top = (y - 25) + 'px';
       gameEl.appendChild(mark);
       setTimeout(() => mark.remove(), 900);
     }
@@ -1006,57 +821,35 @@
       const task = TASKS[taskIndex % TASKS.length];
       modalQuestionEl.textContent = task.question;
       modalOptionsEl.innerHTML = '';
-
       const shuffled = [...task.options].sort(() => Math.random() - 0.5);
-
       shuffled.forEach(opt => {
         const btn = document.createElement('button');
         btn.className = 'option-btn';
         btn.innerHTML = `<span class="bullet"></span><span>${opt.text}</span>`;
-        btn.addEventListener('click', () => {
-          playSound(soundClick);
-          handleAnswer(opt.correct, btn);
-        });
+        btn.addEventListener('click', () => { playSound(soundClick); handleAnswer(opt.correct, btn); });
         modalOptionsEl.appendChild(btn);
       });
-
-      savedVelocity = {
-        vx: hero.vx,
-        vy: hero.vy,
-        autoMoving: hero.autoMoving
-      };
-      hero.vx = 0;
-      hero.vy = 0;
-      hero.autoMoving = false;
+      savedVelocity = { vx: hero.vx, vy: hero.vy, autoMoving: hero.autoMoving };
+      hero.vx = 0; hero.vy = 0; hero.autoMoving = false;
       modalOpen = true;
-
       taskModal.classList.add('active');
     }
 
     function hideModal() {
       taskModal.classList.remove('active');
       modalOpen = false;
-      hero.vx = savedVelocity.vx;
-      hero.vy = savedVelocity.vy;
-      hero.autoMoving = savedVelocity.autoMoving;
+      hero.vx = savedVelocity.vx; hero.vy = savedVelocity.vy; hero.autoMoving = savedVelocity.autoMoving;
     }
 
     function handleAnswer(isCorrect, btn) {
       if (isCorrect) {
         btn.classList.add('correct-highlight');
         playSound(soundCorrect);
-        setTimeout(() => {
-          hideModal();
-          handleCorrectAnswer();
-        }, 350);
+        setTimeout(() => { hideModal(); handleCorrectAnswer(); }, 350);
       } else {
         btn.classList.add('option-incorrect-anim');
         playSound(soundWrong);
-        setTimeout(() => {
-          hideModal();
-          btn.classList.remove('option-incorrect-anim');
-          handleWrongAnswer();
-        }, 350);
+        setTimeout(() => { hideModal(); btn.classList.remove('option-incorrect-anim'); handleWrongAnswer(); }, 350);
       }
     }
 
@@ -1064,60 +857,40 @@
       if (!currentItemId) return;
       const item = items.find(it => it.id === currentItemId);
       if (!item || item.solved) return;
-
       item.solved = true;
-      item.el.style.transform = 'scale(0.1)';
-      item.el.style.opacity = '0';
-      const cx = item.x + item.size / 2;
-      const cy = item.y + item.size / 2;
-
-      showGoldPop(cx, cy);
-      showFloatingScore("+10", cx, cy - 10);
+      item.el.style.transform = 'scale(0.1)'; item.el.style.opacity = '0';
+      const cx = item.x + item.size / 2; const cy = item.y + item.size / 2;
+      showGoldPop(cx, cy); showFloatingScore("+10", cx, cy - 10);
       setTimeout(() => item.el.remove(), 250);
-
       hero.scale += HERO_GROWTH_PER_CORRECT;
       updateHeroVisual();
-
-      score += 10;
-      foundCount++;
-      updateHUD();
+      score += 10; foundCount++; updateHUD();
       currentItemId = null;
-
       checkWinCondition();
     }
 
     function handleWrongAnswer() {
-      mistakes++;
-      updateHUD();
+      mistakes++; updateHUD();
       if (!currentItemId) return;
-
       const item = items.find(it => it.id === currentItemId);
       if (item) {
-        const cx = item.x + item.size / 2;
-        const cy = item.y + item.size / 2;
+        const cx = item.x + item.size / 2; const cy = item.y + item.size / 2;
         showErrorMark(cx, cy);
       }
       currentItemId = null;
-
-      if (mistakes >= MAX_MISTAKES) {
-        triggerGameOver();
-      }
+      if (mistakes >= MAX_MISTAKES) triggerGameOver();
     }
 
     function triggerGameOver() {
-      isGameOver = true;
-      playSound(soundLose);
-      overlayTitle.textContent = "Игра окончена";
-      overlaySub.textContent = "Попробуй ещё раз";
+      isGameOver = true; playSound(soundLose);
+      overlayTitle.textContent = "Игра окончена"; overlaySub.textContent = "Попробуй ещё раз";
       showOverlay(false);
     }
 
     function checkWinCondition() {
       if (foundCount >= NUM_MAIN_ITEMS) {
-        isWin = true;
-        playSound(soundWin);
-        overlayTitle.textContent = "Молодец!";
-        overlaySub.textContent = "Ты нашёл(а) все верные слова!";
+        isWin = true; playSound(soundWin);
+        overlayTitle.textContent = "Молодец!"; overlaySub.textContent = "Ты нашёл(а) все верные слова!";
         showOverlay(true);
       }
     }
@@ -1148,47 +921,21 @@
 
     function gameLoop() {
       if (isGameOver || isWin || !gameStarted) return;
-
       moveHeroByInput();
       handleInputDirectionForAuto();
       moveHeroAuto();
       updateHeroVisual();
       updateNearbyAndAutoMoveTrigger();
       checkCollisions();
-
       requestAnimationFrame(gameLoop);
     }
 
-    window.addEventListener('keydown', e => {
-      if (e.key in keys) {
-        keys[e.key] = true;
-      }
-    });
-    window.addEventListener('keyup', e => {
-      if (e.key in keys) {
-        keys[e.key] = false;
-      }
-    });
+    window.addEventListener('keydown', e => { if (e.key in keys) keys[e.key] = true; });
+    window.addEventListener('keyup', e => { if (e.key in keys) keys[e.key] = false; });
 
-    // ОБРАБОТЧИКИ КНОПОК
-    
-    btnStartGame.addEventListener('click', () => {
-      playSound(soundClick);
-      initGame();
-    });
-
-    btnRestart.addEventListener('click', () => {
-      playSound(soundClick);
-      initGame();
-    });
-
-    window.addEventListener('load', () => {
-      // Герой не виден под плашкой, но можно обновить
-    });
-
-    window.addEventListener('resize', () => {
-      // При изменении размера окна можно перерисовать или сбросить
-    });
+    btnStartGame.addEventListener('click', () => { playSound(soundClick); initGame(); });
+    btnRestart.addEventListener('click', () => { playSound(soundClick); initGame(); });
+    window.addEventListener('load', () => {});
   </script>
 </body>
 </html>
